@@ -9,8 +9,7 @@ export default function useOutsideClick(ref, cb) {
     };
     document.addEventListener("mousedown", handleOutsideClicked);
     return () => {
-      document.addEventListener("mousedown", handleOutsideClicked);
+      document.removeEventListener("mousedown", handleOutsideClicked);
     };
   }, [ref, cb]);
 }
- 
