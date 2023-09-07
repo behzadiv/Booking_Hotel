@@ -43,6 +43,7 @@ const Header = () => {
         <div className="headerSearchItem">
           <div
             className="optionDropDown"
+            id="optionDropDown"
             onClick={() => {
               setOpenOption(!openOption);
             }}
@@ -73,7 +74,7 @@ export default Header;
 
 function GuestOption({ options, dispatch, setOpenOption }) {
   const optionRef = useRef();
-  useOutsideClick(optionRef, () => setOpenOption(false));
+  useOutsideClick(optionRef, "optionDropDown", () => setOpenOption(false));
 
   return (
     <div className="guestOptions" ref={optionRef}>
