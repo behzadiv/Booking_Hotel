@@ -1,10 +1,25 @@
 import { MdLocationOn } from "react-icons/md";
 import { HiCalendar, HiSearch, HiMinus, HiPlus } from "react-icons/hi";
-import { useState } from "react";
+import { useReducer, useState } from "react";
 
 const Header = () => {
   const [destination, setDestination] = useState("");
   const [openOption, setOpenOption] = useState(false);
+  const optionsReducer = (state, action) => {
+    switch (action.type) {
+      case "decrement":
+        return { ...state, [action.payload]: state[action.payload] - 1 };
+      case "increment":
+        return { ...state, [action.payload]: state[action.payload] + 1 };
+      default:
+        return state;
+    }
+  };
+  const [options, dispatch] = useReducer(optionsReducer, {
+    adult: 1,
+    children: 0,
+    room: 1,
+  });
 
   return (
     <div className="header">
@@ -31,9 +46,10 @@ const Header = () => {
               setOpenOption(!openOption);
             }}
           >
-            1adult &bull; 2children &bull;2room
+            {options.adult} adult &bull; {options.children} children &bull;
+            {options.room} room
           </div>
-          {openOption && <GuestOption />}
+          {openOption && <GuestOption options={options} dispatch={dispatch} />}
           <span className="seperator"></span>
         </div>
         <div className="headerSearchItem">
@@ -48,27 +64,55 @@ const Header = () => {
 
 export default Header;
 
-function GuestOption() {
+function GuestOption({ options, dispatch }) {
   return (
     <div className="guestOptions">
-      <OptionItem />
-      <OptionItem />
-      <OptionItem />
+      <OptionItem
+        title="adult"
+        dispatch={dispatch}
+        minValue={1}
+        options={options}
+      />
+      <OptionItem
+        title="children"
+        dispatch={dispatch}
+        minValue={0}
+        options={options}
+      />
+      <OptionItem
+        title="room"
+        dispatch={dispatch}
+        minValue={1}
+        options={options}
+      />
     </div>
   );
 }
 
-function OptionItem() {
+function OptionItem({ title, dispatch, options, minValue }) {
   return (
     <div className="guestOptionItem">
-      <span className="optionText">adult</span>
+      <span className="optionText">{title}</span>
       <div className="optionCounter">
-        <button className="optionCounterBtn">
-          <HiMinus className="icon" />
+        <button
+          className="optionCounterBtn"
+          disabled={options[title] <= minValue}
+        >
+          <HiMinus
+            className="icon"
+            onClick={() => {
+              dispatch({ type: "decrement", payload: title });
+            }}
+          />
         </button>
-        <span>1</span>
+        <span>{options[title]}</span>
         <button className="optionCounterBtn">
-          <HiPlus className="icon" />
+          <HiPlus
+            className="icon"
+            onClick={() => {
+              dispatch({ type: "increment", payload: title });
+            }}
+          />
         </button>
       </div>
     </div>
