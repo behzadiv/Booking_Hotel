@@ -19,6 +19,7 @@ const Hotels = () => {
   if (!data.length) return <p>Not found...</p>;
   return (
     <div className="searchList">
+      <h2>Search Results({data.length})</h2>
       {data.map((item) => {
         return (
           <Link
