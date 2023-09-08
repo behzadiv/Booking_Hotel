@@ -6,6 +6,22 @@ import { DateRange } from "react-date-range";
 import { format } from "date-fns";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
+import {
+  createSearchParams,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
+
+const optionsReducer = (state, action) => {
+  switch (action.type) {
+    case "decrement":
+      return { ...state, [action.payload]: state[action.payload] - 1 };
+    case "increment":
+      return { ...state, [action.payload]: state[action.payload] + 1 };
+    default:
+      return state;
+  }
+};
 
 const Header = () => {
   const [destination, setDestination] = useState("");
@@ -18,22 +34,23 @@ const Header = () => {
       key: "selection",
     },
   ]);
-  const optionsReducer = (state, action) => {
-    switch (action.type) {
-      case "decrement":
-        return { ...state, [action.payload]: state[action.payload] - 1 };
-      case "increment":
-        return { ...state, [action.payload]: state[action.payload] + 1 };
-      default:
-        return state;
-    }
-  };
   const [options, dispatch] = useReducer(optionsReducer, {
     adult: 1,
     children: 0,
     room: 1,
   });
-  
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const handleSearch = () => {
+    const decodedParams = createSearchParams({ //when our params are object
+      destination,
+      date: JSON.stringify(date),
+      options: JSON.stringify(options),
+    });
+    navigate({pathname: "/hotels", search: decodedParams.toString() });
+  };
+
   return (
     <div className="header">
       <div className="headerSearch">
@@ -88,7 +105,7 @@ const Header = () => {
           <span className="seperator"></span>
         </div>
         <div className="headerSearchItem">
-          <button className="headerSearchBtn">
+          <button className="headerSearchBtn" onClick={handleSearch}>
             <HiSearch className="headerIcon" />
           </button>
         </div>
