@@ -3,7 +3,7 @@ import "./App.css";
 import LocationList from "./components/locationList/LocationList";
 import { Route, Routes } from "react-router-dom";
 import AppLayout from "./components/appLayout/AppLayout";
-import Hotels from "./components/Hotels";
+import Hotels from "./components/hotels/Hotels";
 
 function App() {
   return (
