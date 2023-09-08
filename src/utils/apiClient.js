@@ -1,8 +1,8 @@
 import axios from "axios";
 
 export default function apiClient(option) {
-  const makingUrl = (url) => {
-    return import.meta.env.VITE_BASE_URL + url;
+  const makingUrl = (option) => {
+    return `${import.meta.env.VITE_BASE_URL}${option.url}${option.query}`;
   };
-  return axios({ url: makingUrl(option.url), method: option.method });
+  return axios({ url: makingUrl(option), method: option.method });
 }
