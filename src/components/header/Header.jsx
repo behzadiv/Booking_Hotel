@@ -24,7 +24,10 @@ const optionsReducer = (state, action) => {
 };
 
 const Header = () => {
-  const [destination, setDestination] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [destination, setDestination] = useState(
+    searchParams.get("destination")
+  );
   const [openOption, setOpenOption] = useState(false);
   const [openDate, setOpenDate] = useState(false);
   const [date, setDate] = useState([
@@ -40,15 +43,15 @@ const Header = () => {
     room: 1,
   });
 
-  const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const handleSearch = () => {
-    const decodedParams = createSearchParams({ //when our params are object
+    const decodedParams = createSearchParams({
+      //when our params are object
       destination,
       date: JSON.stringify(date),
       options: JSON.stringify(options),
     });
-    navigate({pathname: "/hotels", search: decodedParams.toString() });
+    navigate({ pathname: "/hotels", search: decodedParams.toString() });
   };
 
   return (
@@ -57,6 +60,7 @@ const Header = () => {
         <div className="headerSearchItem ">
           <MdLocationOn className="locationIcon" />
           <input
+            value={destination}
             type="text"
             name="destination"
             placeholder="Where to go?"
