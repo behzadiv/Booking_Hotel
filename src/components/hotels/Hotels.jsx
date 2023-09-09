@@ -1,26 +1,16 @@
-import { useEffect } from "react";
-import { Link, useSearchParams } from "react-router-dom";
-import useFetch from "../../hooks/useFetch";
+import { Link } from "react-router-dom";
+import { useHotels } from "../context/HotelsContext";
 
 const Hotels = () => {
-  const [searchParams] = useSearchParams();
-  const destination = searchParams.get("destination");
-  const room = JSON.parse(searchParams.get("options")).room;
-  const [{ data, loading }, doFetch] = useFetch();
-  useEffect(() => {
-    doFetch({
-      url: "/hotels",
-      query: `?q=${destination}&accommodates_gte=${room}`,
-      method: "GET",
-    });
-  }, [searchParams]);
+  const {loading, hotels} = useHotels();
 
   if (loading) return <p>loading...</p>;
-  if (!data.length) return <p>Not found...</p>;
+  if (!hotels.length) return <p>Not found...</p>;
+
   return (
     <div className="searchList">
-      <h2>Search Results({data.length})</h2>
-      {data.map((item) => {
+      <h2>Search Results({hotels.length})</h2>
+      {hotels.map((item) => {
         return (
           <Link
             to={`/hotels/${item.id}?lat=${item.latitude}&lng=${item.longitude}`}
