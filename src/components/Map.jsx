@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 import { useSearchParams } from "react-router-dom";
+import useGeoLocation from "../hooks/useGeoLocation";
 import { useHotels } from "./context/HotelsContext";
 
 const Map = () => {
   const [mapCenter, setMapCenter] = useState([52.36, 4.86]);
   const { hotels } = useHotels();
+  const [{ loading, data: geoPosition }, getPosition] = useGeoLocation();
   const [searchParams] = useSearchParams();
   const lat = searchParams.get("lat");
   const lng = searchParams.get("lng");
@@ -13,6 +15,12 @@ const Map = () => {
   useEffect(() => {
     if (lat && lng) setMapCenter([lat, lng]);
   }, [lat, lng]);
+
+  useEffect(() => {
+    if (geoPosition.lat && geoPosition.lng) {
+      setMapCenter([geoPosition.lat, geoPosition.lng]);
+    }
+  }, [geoPosition]);
 
   return (
     <div className="mapContainer">
@@ -34,6 +42,9 @@ const Map = () => {
             </Marker>
           );
         })}
+        <button className="getLocation" onClick={getPosition}>
+          {loading ? "Loading..." : "Use Your Location"}
+        </button>
       </MapContainer>
     </div>
   );
