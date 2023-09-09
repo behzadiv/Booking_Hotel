@@ -4,14 +4,12 @@ import Map from "../Map";
 
 const AppLayout = () => {
   return (
-    <HotelsProvider>
-      <div className="appLayout">
-        <div className="sidebar">
-          <Outlet />
-        </div>
-        <Map />
+    <div className="appLayout">
+      <div className="sidebar">
+        <Outlet />
       </div>
-    </HotelsProvider>
+      <Map />
+    </div>
   );
 };
 

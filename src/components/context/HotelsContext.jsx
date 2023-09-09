@@ -6,8 +6,8 @@ const HotelsContext = createContext();
 
 const HotelsProvider = ({ children }) => {
   const [searchParams] = useSearchParams();
-  const destination = searchParams.get("destination");
-  const room = JSON.parse(searchParams.get("options")).room;
+  const destination = searchParams.get("destination") || "";
+  const room = JSON.parse(searchParams.get("options"))?.room || 1;
   const [{ data, loading }, doFetch] = useFetch();
   useEffect(() => {
     doFetch({
