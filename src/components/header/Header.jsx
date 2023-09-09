@@ -26,7 +26,7 @@ const optionsReducer = (state, action) => {
 const Header = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [destination, setDestination] = useState(
-    searchParams.get("destination")
+    searchParams.get("destination") || ""
   );
   const [openOption, setOpenOption] = useState(false);
   const [openDate, setOpenDate] = useState(false);

@@ -8,7 +8,7 @@ import HotelsProvider from "./components/context/HotelsContext";
 
 function App() {
   return (
-    <HotelsProvider>
+    <>
       <Header />
       <Routes>
         <Route path="/" element={<LocationList />} />
@@ -17,7 +17,7 @@ function App() {
           <Route path=":id" element={<div>single hotel</div>} />
         </Route>
       </Routes>
-    </HotelsProvider>
+    </>
   );
 }
 
