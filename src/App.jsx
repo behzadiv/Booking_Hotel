@@ -8,22 +8,25 @@ import HotelsProvider from "./components/context/HotelsContext";
 import HotelDetails from "./components/hotelDetails/HotelDetails";
 import BookmarksLayout from "./components/bookmarksLayout/BookmarksLayout";
 import Bookmarks from "./components/bookmarks/Bookmarks";
+import BookmarksProvider from "./components/context/BookmarksContext";
 
 function App() {
   return (
     <HotelsProvider>
-      <Header />
-      <Routes>
-        <Route path="/" element={<LocationList />} />
-        <Route path="/hotels" element={<AppLayout />}>
-          <Route index element={<Hotels />} />
-          <Route path=":id" element={<HotelDetails />} />
-        </Route>
-        <Route path="/bookmarks" element={<BookmarksLayout />}>
-          <Route index element={<Bookmarks />} />
-          <Route path="add" element={<div>add</div>} />
-        </Route>
-      </Routes>
+      <BookmarksProvider>
+        <Header />
+        <Routes>
+          <Route path="/" element={<LocationList />} />
+          <Route path="/hotels" element={<AppLayout />}>
+            <Route index element={<Hotels />} />
+            <Route path=":id" element={<HotelDetails />} />
+          </Route>
+          <Route path="/bookmarks" element={<BookmarksLayout />}>
+            <Route index element={<Bookmarks />} />
+            <Route path="add" element={<div>add</div>} />
+          </Route>
+        </Routes>
+      </BookmarksProvider>
     </HotelsProvider>
   );
 }
