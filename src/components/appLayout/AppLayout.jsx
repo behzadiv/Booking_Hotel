@@ -9,7 +9,7 @@ const AppLayout = () => {
       <div className="sidebar">
         <Outlet />
       </div>
-      <Map locations={hotels} />
+      <Map markersLocation={hotels} />
     </div>
   );
 };
