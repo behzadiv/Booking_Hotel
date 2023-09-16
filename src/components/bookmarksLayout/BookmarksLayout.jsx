@@ -7,7 +7,7 @@ const BookmarksLayout = () => {
       <div className="sidebar">
         <Outlet />
       </div>
-      <Map />
+      <Map markersLocation={[]} />
     </div>
   );
 };
