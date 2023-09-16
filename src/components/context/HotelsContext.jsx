@@ -9,6 +9,17 @@ const HotelsProvider = ({ children }) => {
   const destination = searchParams.get("destination") || "";
   const room = JSON.parse(searchParams.get("options"))?.room || 1;
   const [{ data, loading }, doFetch] = useFetch();
+  const [
+    { data: singleHotelData, loading: singleHotelLoading },
+    fetchSingleHotelData,
+  ] = useFetch();
+
+  const getSingleHotelData = (id) => {
+    fetchSingleHotelData({
+      url: `/hotels/${id}`,
+    });
+  };
+
   useEffect(() => {
     doFetch({
       url: "/hotels",
@@ -18,7 +29,15 @@ const HotelsProvider = ({ children }) => {
   }, [searchParams]);
 
   return (
-    <HotelsContext.Provider value={{ loading, hotels: data }}>
+    <HotelsContext.Provider
+      value={{
+        loading,
+        hotels: data,
+        currentHotel: singleHotelData,
+        singleHotelLoading,
+        getSingleHotelData,
+      }}
+    >
       {children}
     </HotelsContext.Provider>
   );
