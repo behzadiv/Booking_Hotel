@@ -1,23 +1,47 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import useFetch from "../../hooks/useFetch";
 import useUrlLocation from "../../hooks/useUrlLocation";
 
 const BASE_GEOLOCATION_URL =
   "https://api.bigdatacloud.net/data/reverse-geocode-client?";
 
+const initialState = {
+  data: {},
+  loading: false,
+  error: null,
+};
+const bookmarkReducer = (state, action) => {
+  switch (action.type) {
+    case "FETCH_REQUEST":
+      return { data: {}, loading: true, error: null };
+    case "FETCH_SUCCESS":
+      return { data: action.payload, loading: false, error: null };
+    case "FETCH_FAILURE":
+      return { data: {}, loading: false, error: action.payload };
+    case "ON_CHANGE": {
+      console.log(action.payload);
+      return {
+        ...state,
+        data: { ...state.data, [action.fieldName]: action.payload },
+      };
+    }
+    default:
+      return state;
+  }
+};
+
 const AddBookmark = () => {
   const [lat, lng] = useUrlLocation();
-  const [cityName, setCityName] = useState("");
-  const [country, setCountry] = useState("");
-  const [countryCode, setcountryCode] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [{ loading, error, data }, dispatch] = useReducer(
+    bookmarkReducer,
+    initialState
+  );
 
   useEffect(() => {
     if (!lat || !lng) return;
     async function getLocationData() {
-      setLoading(true);
+      dispatch({ type: "FETCH_REQUEST" });
       try {
         const { data } = await axios.get(
           `${BASE_GEOLOCATION_URL}latitude=${lat}&longitude=${lng}`
@@ -26,14 +50,14 @@ const AddBookmark = () => {
           throw new Error(
             "selected area is not a city ,please select somewhere else "
           );
-        setCityName(data.city);
-        setCountry(data.countryName);
-        setcountryCode(data.countryCode);
-        setError(null);
+        const bookmark = {
+          cityName: data.city,
+          country: data.countryName,
+          countryCode: data.countryCode,
+        };
+        dispatch({ type: "FETCH_SUCCESS", payload: bookmark });
       } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
+        dispatch({ type: "FETCH_FAILURE", payload: error.message });
       }
     }
     getLocationData();
@@ -50,8 +74,14 @@ const AddBookmark = () => {
           <input
             name="cityName"
             id="cityName"
-            value={cityName}
-            onChange={(e) => setCityName(e.target.value)}
+            value={data?.cityName}
+            onChange={(e) =>
+              dispatch({
+                type: "ON_CHANGE",
+                fieldName: "cityName",
+                payload: e.target.value,
+              })
+            }
           />
         </div>
         <div className="formControl">
@@ -59,15 +89,19 @@ const AddBookmark = () => {
           <input
             name="country"
             id="country"
-            value={country}
-            onChange={(e) => setCountry(e.target.value)}
+            value={data?.country}
+            onChange={(e) =>
+              dispatch({
+                type: "ON_CHANGE",
+                fieldName: "country",
+                payload: e.target.value,
+              })
+            }
           />
         </div>
         <div className="buttons">
           <button className="btn btn--back">&larr; back</button>
-          <button className="btn btn--primary">
-            Add
-          </button>
+          <button className="btn btn--primary">Add</button>
         </div>
       </form>
     </div>
