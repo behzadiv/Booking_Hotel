@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useReducer, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
 import useUrlLocation from "../../hooks/useUrlLocation";
 
@@ -37,6 +38,27 @@ const AddBookmark = () => {
     bookmarkReducer,
     initialState
   );
+  const { cityName, country, countryCode } = data;
+  const [,postData] = useFetch();
+  const navigate = useNavigate();
+
+  const addToBookmarks = (e) => {
+    e.preventDefault();
+    const newBookmark = {
+      cityName,
+      country,
+      countryCode,
+      latitude: lat,
+      longitude: lng,
+      host_location: cityName + country,
+      id: Math.floor(Math.random() * 10000),
+    };
+    postData({
+      url: "/bookmarks",
+      method: "POST",
+      data: newBookmark,
+    });
+  };
 
   useEffect(() => {
     if (!lat || !lng) return;
@@ -74,7 +96,7 @@ const AddBookmark = () => {
           <input
             name="cityName"
             id="cityName"
-            value={data?.cityName}
+            value={cityName}
             onChange={(e) =>
               dispatch({
                 type: "ON_CHANGE",
@@ -89,7 +111,7 @@ const AddBookmark = () => {
           <input
             name="country"
             id="country"
-            value={data?.country}
+            value={country}
             onChange={(e) =>
               dispatch({
                 type: "ON_CHANGE",
@@ -100,8 +122,18 @@ const AddBookmark = () => {
           />
         </div>
         <div className="buttons">
-          <button className="btn btn--back">&larr; back</button>
-          <button className="btn btn--primary">Add</button>
+          <button
+            className="btn btn--back"
+            onClick={(e) => {
+              e, preventDefault();
+              navigate(-1);
+            }}
+          >
+            &larr; back
+          </button>
+          <button className="btn btn--primary" onClick={addToBookmarks}>
+            Add
+          </button>
         </div>
       </form>
     </div>
