@@ -5,7 +5,17 @@ const BookmarksContext = createContext();
 
 const BookmarksProvider = ({ children }) => {
   const [{ data, loading }, doFetch] = useFetch();
-  
+  const [
+    { data: singleBookmarkData, loading: singleBookmarkLoading },
+    fetchSingleBookmark,
+  ] = useFetch();
+
+  const getSingleBookmark = (id) => {
+    fetchSingleBookmark({
+      url: `/bookmarks/${id}`,
+    });
+  };
+
   useEffect(() => {
     doFetch({
       url: "/bookmarks",
@@ -18,6 +28,9 @@ const BookmarksProvider = ({ children }) => {
       value={{
         loading,
         bookmarks: data,
+        currentBookmark: singleBookmarkData,
+        singleBookmarkLoading,
+        getSingleBookmark,
       }}
     >
       {children}
