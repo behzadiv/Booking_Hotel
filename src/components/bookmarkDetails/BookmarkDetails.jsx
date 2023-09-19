@@ -1,12 +1,14 @@
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import ReactCountryFlag from "react-country-flag";
+import { useNavigate, useParams } from "react-router-dom";
 import { useBookmarks } from "../context/BookmarksContext";
 
 const BookmarkDetail = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const {
     singleBookmarkLoading: loading,
-    currentBookmark: data,
+    currentBookmark,
     getSingleBookmark,
   } = useBookmarks();
 
@@ -15,8 +17,19 @@ const BookmarkDetail = () => {
   }, [id]);
 
   if (loading) return <p>Loading...</p>;
-  console.log(data);
-  return <div>bookmark detail</div>;
+  return (
+    <div>
+      <h2>{currentBookmark.cityName}</h2>
+      <div className="bookmarkItem">
+        <ReactCountryFlag svg countryCode={currentBookmark.countryCode} />
+        &nbsp;<strong>{currentBookmark.cityName}</strong>&nbsp;
+        <span>{currentBookmark.country}</span>
+      </div>
+      <button className="btn btn--back" onClick={() => navigate(-1)}>
+        &larr; Back
+      </button>
+    </div>
+  );
 };
 
 export default BookmarkDetail;
