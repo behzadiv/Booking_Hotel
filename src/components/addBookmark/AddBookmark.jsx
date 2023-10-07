@@ -39,7 +39,7 @@ const AddBookmark = () => {
     initialState
   );
   const { cityName, country, countryCode } = data;
-  const [,postData] = useFetch();
+  const [, postData] = useFetch();
   const navigate = useNavigate();
 
   const addToBookmarks = (e) => {
@@ -125,7 +125,7 @@ const AddBookmark = () => {
           <button
             className="btn btn--back"
             onClick={(e) => {
-              e, preventDefault();
+              e.preventDefault();
               navigate(-1);
             }}
           >
