@@ -35,6 +35,7 @@ const BookmarksProvider = ({ children }) => {
       method: "POST",
       data: newBookmark,
     });
+    getSingleBookmark(newBookmark.id);
     setAddedNewBookmark(true);
   };
 
