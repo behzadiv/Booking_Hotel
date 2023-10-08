@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useEffect, useReducer, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import useFetch from "../../hooks/useFetch";
 import useUrlLocation from "../../hooks/useUrlLocation";
+import { useBookmarks } from "../context/BookmarksContext";
 
 const BASE_GEOLOCATION_URL =
   "https://api.bigdatacloud.net/data/reverse-geocode-client?";
@@ -39,7 +39,7 @@ const AddBookmark = () => {
     initialState
   );
   const { cityName, country, countryCode } = data;
-  const [, postData] = useFetch();
+  const { createBookmarks } = useBookmarks();
   const navigate = useNavigate();
 
   const addToBookmarks = (e) => {
@@ -53,11 +53,8 @@ const AddBookmark = () => {
       host_location: cityName + country,
       id: Math.floor(Math.random() * 10000),
     };
-    postData({
-      url: "/bookmarks",
-      method: "POST",
-      data: newBookmark,
-    });
+    createBookmarks(newBookmark);
+    navigate("/bookmarks");
   };
 
   useEffect(() => {

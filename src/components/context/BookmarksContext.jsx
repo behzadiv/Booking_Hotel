@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import useFetch from "../../hooks/useFetch";
 
 const BookmarksContext = createContext();
@@ -9,19 +9,31 @@ const BookmarksProvider = ({ children }) => {
     { data: singleBookmarkData, loading: singleBookmarkLoading },
     fetchSingleBookmark,
   ] = useFetch();
+  const [, postData] = useFetch();
 
   const getSingleBookmark = (id) => {
     fetchSingleBookmark({
       url: `/bookmarks/${id}`,
     });
   };
-
-  useEffect(() => {
+  const getBookmarkData = () => {
     doFetch({
       url: "/bookmarks",
       method: "GET",
     });
+  };
+
+  useEffect(() => {
+    getBookmarkData()
   }, []);
+
+  const createBookmarks = (newBookmark) => {
+    postData({
+      url: "/bookmarks",
+      method: "POST",
+      data: newBookmark,
+    });
+  };
 
   return (
     <BookmarksContext.Provider
@@ -31,6 +43,7 @@ const BookmarksProvider = ({ children }) => {
         currentBookmark: singleBookmarkData,
         singleBookmarkLoading,
         getSingleBookmark,
+        createBookmarks,
       }}
     >
       {children}
