@@ -10,6 +10,7 @@ const BookmarksProvider = ({ children }) => {
     fetchSingleBookmark,
   ] = useFetch();
   const [, postData] = useFetch();
+  const [, deleteData] = useFetch();
   const [addedNewBookmark, setAddedNewBookmark] = useState(true);
 
   const getSingleBookmark = (id) => {
@@ -38,6 +39,14 @@ const BookmarksProvider = ({ children }) => {
     getSingleBookmark(newBookmark.id);
     setAddedNewBookmark(true);
   };
+  const deleteBookmark = (id) => {
+    console.log(id);
+    deleteData({
+      url: `/bookmarks/${id}`,
+      method: "DELETE",
+    });
+    setAddedNewBookmark(true);
+  };
 
   return (
     <BookmarksContext.Provider
@@ -48,6 +57,7 @@ const BookmarksProvider = ({ children }) => {
         singleBookmarkLoading,
         getSingleBookmark,
         createBookmarks,
+        deleteBookmark,
       }}
     >
       {children}
