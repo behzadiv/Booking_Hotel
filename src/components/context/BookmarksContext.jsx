@@ -10,6 +10,7 @@ const BookmarksProvider = ({ children }) => {
     fetchSingleBookmark,
   ] = useFetch();
   const [, postData] = useFetch();
+  const [addedNewBookmark, setAddedNewBookmark] = useState(true);
 
   const getSingleBookmark = (id) => {
     fetchSingleBookmark({
@@ -24,8 +25,9 @@ const BookmarksProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    getBookmarkData()
-  }, []);
+    addedNewBookmark && getBookmarkData();
+    setAddedNewBookmark(false);
+  }, [addedNewBookmark]);
 
   const createBookmarks = (newBookmark) => {
     postData({
@@ -33,6 +35,7 @@ const BookmarksProvider = ({ children }) => {
       method: "POST",
       data: newBookmark,
     });
+    setAddedNewBookmark(true);
   };
 
   return (
