@@ -114,6 +114,7 @@ const Header = () => {
           </button>
         </div>
       </div>
+      <h2 onClick={()=>{navigate("/login")}}>login</h2>
     </div>
   );
 };
