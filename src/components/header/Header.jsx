@@ -4,7 +4,7 @@ import {
   HiSearch,
   HiMinus,
   HiPlus,
-  HiLogout,
+  HiOutlineLogout
 } from "react-icons/hi";
 import { useReducer, useRef, useState } from "react";
 import useOutsideClick from "../../hooks/useOutsideClick";
@@ -198,7 +198,7 @@ function User() {
     <div className="logoutContainer">
       <h4>{user.name}</h4>
       <button>
-        <HiLogout className="logout" onClick={handleLogout} />
+        <HiOutlineLogout className="logout" onClick={handleLogout} />
       </button>
     </div>
   ) : (
