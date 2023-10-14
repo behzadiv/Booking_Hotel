@@ -13,6 +13,7 @@ import BookmarkDetail from "./components/bookmarkDetails/BookmarkDetails";
 import AddBookmark from "./components/addBookmark/AddBookmark";
 import Login from "./components/login/Login";
 import AuthProvider from "./components/context/AuthContext";
+import ProtectedRoute from "./components/protectedRoute/ProtectedRoute";
 
 function App() {
   return (
@@ -27,7 +28,14 @@ function App() {
               <Route index element={<Hotels />} />
               <Route path=":id" element={<HotelDetails />} />
             </Route>
-            <Route path="/bookmarks" element={<BookmarksLayout />}>
+            <Route
+              path="/bookmarks"
+              element={
+                <ProtectedRoute>
+                  <BookmarksLayout />
+                </ProtectedRoute>
+              }
+            >
               <Route index element={<Bookmarks />} />
               <Route path=":id" element={<BookmarkDetail />} />
               <Route path="add" element={<AddBookmark />} />
