@@ -4,7 +4,9 @@ import {
   HiSearch,
   HiMinus,
   HiPlus,
-  HiOutlineLogout
+  HiOutlineLogout,
+  HiHome,
+  HiBookmark,
 } from "react-icons/hi";
 import { useReducer, useRef, useState } from "react";
 import useOutsideClick from "../../hooks/useOutsideClick";
@@ -64,6 +66,12 @@ const Header = () => {
 
   return (
     <div className="header">
+      <NavLink to={"/"}>
+        <HiHome className="headerIcon" />
+      </NavLink>
+      <NavLink to={"/bookmarks"}>
+        <HiBookmark className="headerIcon" />
+      </NavLink>
       <div className="headerSearch">
         <div className="headerSearchItem ">
           <MdLocationOn className="locationIcon" />
