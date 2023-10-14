@@ -210,6 +210,8 @@ function User() {
       </button>
     </div>
   ) : (
-    <NavLink to={"/login"}>Login</NavLink>
+    <NavLink to={"/login"} state={"/"}>
+      Login
+    </NavLink>
   );
 }

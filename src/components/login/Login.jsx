@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
@@ -10,12 +10,12 @@ const Login = () => {
   const loginHandler = (e) => {
     e.preventDefault();
     if (email && password) login(email, password);
-    console.log(user);
   };
-
+  const { state } = useLocation();
+  
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/", { replace: true });
+      navigate(`${state}`, { replace: true });
     }
   }, [isAuthenticated, user]);
 
